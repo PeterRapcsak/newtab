@@ -6,7 +6,7 @@
  * If not, see <https://www.gnu.org/licenses/>.
  */
 
-// Define the list of available AI tools and their default visibility
+// Define the list of available AI tools
 const aiToolsRaw = [
     { id: "chatGPT", visible: true, order: 0 },
     { id: "gemini", visible: true, order: 1 },
@@ -27,7 +27,6 @@ const aiTools = aiToolsRaw.map(tool => ({
 // DOM Elements
 const aiToolName = document.getElementById("toolsCont");
 const shortcuts = document.getElementById("shortcutsContainer");
-const aiToolsIcon = document.getElementById("aiToolsIcon");
 const aiToolsSettingsModal = document.getElementById("aiToolsSettingsModal");
 const aiToolsSettingsOverlay = document.getElementById("aiToolsSettingsOverlay");
 const aiToolsForm = document.getElementById("aiToolsForm");
@@ -240,60 +239,18 @@ function closeAIToolsSettings() {
     aiToolsSettingsOverlay.style.display = 'none';
 }
 
-// Function to toggle AI Tools panel
-function toggleAITools(event) {
-    const shortcutsCheckbox = document.getElementById("shortcutsCheckbox");
-
-    if (shortcutsCheckbox.checked) {
-        if (aiToolName.style.display === "flex") {
-            shortcuts.style.display = "flex";
-            aiToolName.style.opacity = "0";
-            aiToolName.style.gap = "0";
-            aiToolName.style.transform = "translateX(-100%)";
-            setTimeout(() => {
-                aiToolName.style.display = "none";
-                shortcuts.style.display = "flex";
-            }, 500);
-        } else {
-            shortcuts.style.display = "none";
-            aiToolName.style.display = "flex";
-            setTimeout(() => {
-                aiToolName.style.opacity = "1";
-                aiToolName.style.transform = "translateX(0)";
-            }, 1);
-            setTimeout(() => {
-                aiToolName.style.gap = "12px";
-            }, 300);
-        }
-    } else {
-        if (aiToolName.style.display === "flex") {
-            shortcuts.style.display = "none";
-            aiToolName.style.opacity = "0";
-            aiToolName.style.gap = "0";
-            aiToolName.style.transform = "translateX(-100%)";
-            setTimeout(() => {
-                aiToolName.style.display = "none";
-            }, 500);
-        } else {
-            shortcuts.style.display = "none";
-            aiToolName.style.display = "flex";
-            setTimeout(() => {
-                aiToolName.style.opacity = "1";
-                aiToolName.style.transform = "translateX(0)";
-            }, 1);
-            setTimeout(() => {
-                aiToolName.style.gap = "12px";
-            }, 300);
-        }
-    }
-    // Prevent outside click handler from triggering
-    if (event) event.stopPropagation();
-}
-
 // Event Listeners
 document.addEventListener("DOMContentLoaded", function () {
     // Apply saved settings
     applyAIToolsSettings();
+
+    // Ensure AI Tools menu is always open
+    aiToolName.style.display = "flex";
+    aiToolName.style.opacity = "1";
+    aiToolName.style.transform = "translateX(0)";
+    aiToolName.style.gap = "12px";
+    aiToolsCont.style.display = "flex";
+    shortcuts.style.display = "flex";
 
     // Allow horizontal scrolling with the mouse wheel
     aiToolsCont.addEventListener('wheel', (event) => {
@@ -306,9 +263,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     }, { passive: false });
-
-    // AI Tools icon click handler
-    aiToolsIcon.addEventListener("click", toggleAITools);
 
     // AI Tools edit button click handler
     aiToolsEditButton.addEventListener("click", function (e) {
@@ -373,34 +327,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Settings overlay click handler
     aiToolsSettingsOverlay.addEventListener("click", closeAIToolsSettings);
 
-    // Handle checkbox state for AI Tools visibility
-    const aiToolsCheckbox = document.getElementById("aiToolsCheckbox");
-
-    aiToolsCheckbox.addEventListener("change", function () {
-        saveCheckboxState("aiToolsCheckboxState", aiToolsCheckbox);
-        if (aiToolsCheckbox.checked) {
-            aiToolsCont.style.display = "flex";
-            saveDisplayStatus("aiToolsDisplayStatus", "flex");
-            aiToolsEditField.classList.remove("inactive");
-            saveActiveStatus("aiToolsEditField", "active")
-        } else {
-            aiToolsCont.style.display = "none";
-            saveDisplayStatus("aiToolsDisplayStatus", "none");
-            aiToolsEditField.classList.add("inactive");
-            saveActiveStatus("aiToolsEditField", "inactive")
-            toggleAITools();
-        }
-    });
-
     // Load saved state
-    loadCheckboxState("aiToolsCheckboxState", aiToolsCheckbox);
     loadDisplayStatus("aiToolsDisplayStatus", aiToolsCont);
     loadActiveStatus("aiToolsEditField", aiToolsEditField);
-
-    // Collapse when clicking outside toolsCont
-    document.addEventListener("click", (event) => {
-        if (!aiToolName.contains(event.target) && aiToolName.style.display === "flex") {
-            toggleAITools();
-        }
-    });
 });
