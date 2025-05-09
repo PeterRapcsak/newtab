@@ -2069,9 +2069,18 @@ body #bookmarkButton.bookmark-button.rotate {
 }
 
 .shortcutsContainer .shortcuts:hover {
-	transform: translateY(-5px) scale(1.02);
+	transform: translateY(-2px) scale(1.02);
 	border-radius: 100px;
+	
+
+}	
+.shortcuts .shortcutLogoContainer:hover {
+	border: 3px solid white; /* Adds a thin white border on hover */
+	box-shadow: 0 4px 8px rgba(255, 255, 255, 0.8);
+	
 }
+
+
 
 .shortcuts .shortcut-name {
 	visibility: visible;
@@ -2097,6 +2106,7 @@ body #bookmarkButton.bookmark-button.rotate {
 .shortcuts:hover .shortcut-name {
 	visibility: visible;
 	opacity: 1;
+
 }
 
 .shortcutsContainer .shortcuts a {
