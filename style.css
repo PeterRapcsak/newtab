@@ -1565,7 +1565,7 @@ body #bookmarkButton.bookmark-button.rotate {
 	background-color: var(--darkColor-blue);
 	border-radius: 100px;
 	position: absolute;
-	transition: width 1s;
+	transition: width 0.2s;
 }
 
 #humidityLevel {
